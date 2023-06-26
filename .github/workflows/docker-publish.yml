@@ -17,7 +17,7 @@ env:
   REGISTRY: ${{ vars.REGISTRY }}
   REGISTRY_USERNAME: ${{ vars.REGISTRY_USERNAME }}
   # github.repository as <account>/<repo>
-  IMAGE_NAME: WsTeam1
+  IMAGE_NAME: WsTeam1:${{ github.sha }}
 
 
 jobs:
