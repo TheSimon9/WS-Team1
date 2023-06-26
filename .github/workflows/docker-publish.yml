@@ -94,7 +94,7 @@ jobs:
           
       - name: Update Docker image tag
         run: |
-          sed -i 's|image: ${{ env.IMAGE_NAME }}:TAG|image: ${{ env.IMAGE_NAME }}:${{ github.sha }}|' ${{ env.DEPLOYMENT_PATH }}
+          sed -i 's|image: ${{ env.IMAGE_NAME }}:TAG|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}|' ${{ env.DEPLOYMENT_PATH }}
 
       - name: Deploy to Kubernetes
         run: |
