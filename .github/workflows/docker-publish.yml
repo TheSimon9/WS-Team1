@@ -58,7 +58,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: | 
-            raw=${{ github.sha }}
+            value=${{ github.sha }}
           
 
       # Build and push Docker image with Buildx (don't push on PR)
