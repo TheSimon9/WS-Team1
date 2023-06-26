@@ -18,6 +18,7 @@ env:
   REGISTRY_USERNAME: ${{ vars.REGISTRY_USERNAME }}
   # github.repository as <account>/<repo>
   IMAGE_NAME: WsTeam1
+  DEPLOYMENT_PATH: deployment.yaml
 
 
 jobs:
@@ -57,7 +58,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: | 
-            type=sha
+            raw=${{ github.sha }}
           
 
       # Build and push Docker image with Buildx (don't push on PR)
@@ -86,7 +87,11 @@ jobs:
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
           enableClusterAdmin: true
+          
+      - name: Update Docker image tag
+        run: |
+          sed -i 's|image: ${{ env.IMAGE_NAME }}:TAG|image: ${{ env.IMAGE_NAME }}:${{ github.sha }}|' ${{ env.DEPLOYMENT_PATH }}
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f deployment.yaml
+          kubectl apply -f ${{ env.DEPLOYMENT_PATH }}
